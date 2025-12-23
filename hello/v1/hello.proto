@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package hello.v1;
+
+// Go package path for generated code.
+// This is the ONLY import path clients will use.
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/hello/v1;hellov1";
+
+// ---------------------------------------------
+// Service: HelloService
+// ---------------------------------------------
+// Demonstrates all gRPC interaction patterns:
+// - Unary
+// - Server streaming
+// - Client streaming
+// - Bidirectional streaming
+service HelloService {
+
+  // Unary RPC
+  // Simple request / simple response
+  rpc SayHello(SayHelloRequest) returns (SayHelloResponse);
+
+  // Server-side streaming
+  // Client sends one request, server streams responses
+  rpc StreamGreetings(StreamGreetingsRequest)
+  returns (stream StreamGreetingsResponse);
+
+  // Client-side streaming
+  // Client streams requests, server replies once
+  rpc CollectGreetings(stream CollectGreetingsRequest)
+  returns (CollectGreetingsResponse);
+
+  // Bidirectional streaming
+  // Both sides stream independently
+  rpc Chat(stream ChatMessage)
+  returns (stream ChatMessage);
+}
+
+// ---------------------------------------------
+// Messages
+// ---------------------------------------------
+
+message SayHelloRequest {
+  string name = 1; // Person to greet
+}
+
+message SayHelloResponse {
+  string message = 1; // Greeting message
+}
+
+// --- Server streaming ---
+
+message StreamGreetingsRequest {
+  string name = 1;
+  int32 count = 2; // Number of greetings requested
+}
+
+message StreamGreetingsResponse {
+  string message = 1;
+  int64 sequence = 2; // Order of the greeting
+}
+
+// --- Client streaming ---
+
+message CollectGreetingsRequest {
+  string message = 1;
+}
+
+message CollectGreetingsResponse {
+  int32 total_received = 1;
+  string summary = 2;
+}
+
+// --- Bidirectional streaming ---
+
+message ChatMessage {
+  string sender = 1;
+  string message = 2;
+  int64 sent_at_unix_ms = 3;
+}

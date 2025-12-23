@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package events.identity.v1;
+
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/events/identity/v1;identityevents";
+
+message UserCreated {
+  string user_id = 1;
+  string email = 2;
+  int64 created_at_unix_ms = 3;
+}

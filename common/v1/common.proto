@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+package common.v1;
+
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/common/v1;common";
