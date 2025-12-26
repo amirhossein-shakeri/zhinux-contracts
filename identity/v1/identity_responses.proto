@@ -3,8 +3,9 @@ syntax = "proto3";
 package identity.v1;
 
 import "zhinux-contracts/user/v1/user.proto";
+import "zhinux-contracts/user/v1/user_service.proto";
 
 message LoginResponse {
-  string               token = 1;
-  user.v1.UserResponse user  = 2;
+  string       token = 1;
+  user.v1.User user  = 2;
 }

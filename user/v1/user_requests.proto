@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package user.v1;
+
+message CreateUserRequest {
+  string          phone    = 1;
+  optional string name     = 2;
+  optional string username = 3;
+  optional string email    = 4;
+}
+
+message GetUserRequest {
+  oneof identifier {
+    string id       = 1;
+    string phone    = 2;
+    string email    = 3;
+    string username = 4;
+  }
+}

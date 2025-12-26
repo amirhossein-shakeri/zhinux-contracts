@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package user.v1;
+
+import "user.proto";
+import "zhinux-contracts/common/v1/pagination.proto";
+
+message ListUsersStreamResponse {
+  oneof payload {
+    common.pagination.v1.PaginationResponse pagination = 1;
+    User                                    user       = 2;
+  }
+}
