@@ -8,6 +8,6 @@ import "zhinux-contracts/common/v1/pagination.proto";
 message ListUsersStreamResponse {
   oneof payload {
     common.pagination.v1.PaginationResponse pagination = 1;
-    User                                    user       = 2;
+    User user = 2;
   }
 }

@@ -1,6 +1,14 @@
 version: v2
 
-name: buf.build/amirhossein-shakeri/zhinux-contracts
+# name: buf.build/amirhossein-shakeri/zhinux-contracts
+
+modules:
+  - path: common
+  - path: events
+  - path: hello
+  - path: identity
+  - path: password
+  - path: user
 
 deps:
   - buf.build/grpc/grpc

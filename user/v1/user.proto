@@ -6,8 +6,8 @@ import "zhinux-contracts/common/v1/metadata.proto";
 
 message User {
   common.metadata.v1.Metadata metadata = 1;
-  string                      phone    = 2;
-  optional string             name     = 3;
-  optional string             username = 4;
-  optional string             email    = 5;
+  string phone = 2;
+  optional string name = 3;
+  optional string username = 4;
+  optional string email = 5;
 }

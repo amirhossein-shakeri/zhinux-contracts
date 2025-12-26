@@ -3,11 +3,11 @@ syntax = "proto3";
 package identity.v1;
 
 message LoginRequest {
-  oneof identifier {
-    string id         = 6;
-    string phone      = 3;
-    string email      = 4;
-    string username   = 5;
+  oneof credential {
+    string id = 6;
+    string phone = 3;
+    string email = 4;
+    string username = 5;
     string identifier = 1; // any of the above
   }
   string password = 2;

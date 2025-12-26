@@ -2,6 +2,11 @@ version: v2
 
 managed:
   enabled: true
+  # go_package_prefix:
+  #   default: github.com/amirhossein-shakeri/zhinux-contracts/gen/go
+  #   except:
+  #     - buf.build/googleapis/googleapis
+  #     - buf.build/grpc/grpc
 
 plugins:
   - remote: buf.build/protocolbuffers/go
