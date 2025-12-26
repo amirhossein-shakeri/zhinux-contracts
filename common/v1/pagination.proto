@@ -4,7 +4,14 @@ package common.pagination.v1;
 
 option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/common/pagination/v1;common";
 
-message Pagination {
-  int32 page = 1;
+message PaginationRequest {
+  int32 page      = 1;
   int32 page_size = 2;
+}
+
+message PaginationResponse {
+  int32 total_items  = 1;
+  int32 total_pages  = 2;
+  int32 current_page = 3;
+  int32 page_size    = 4;
 }
