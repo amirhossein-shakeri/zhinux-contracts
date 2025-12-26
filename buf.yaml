@@ -1,12 +1,27 @@
 version: v2
 
-breaking:
-  use:
-    - FILE
-
-lint:
-  use:
-    - DEFAULT
+name: buf.build/amirhossein-shakeri/zhinux-contracts
 
 deps:
   - buf.build/grpc/grpc
+  - buf.build/googleapis/googleapis
+
+lint:
+  use:
+    - STANDARD
+    - COMMENTS
+    - ENUM_ZERO_VALUE_SUFFIX
+    - ENUM_VALUE_PREFIX
+    - FILE_LOWER_SNAKE_CASE
+    - PACKAGE_VERSION_SUFFIX
+    - RPC_REQUEST_RESPONSE_UNIQUE
+    - SERVICE_SUFFIX
+    - UNSPECIFIED
+
+  except:
+    - PACKAGE_DIRECTORY_MATCH
+    - RPC_RESPONSE_STANDARD_NAME
+
+breaking:
+  use:
+    - FILE
