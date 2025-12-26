@@ -1,3 +1,17 @@
+// Package user.v1 defines the public user domain API.
+//
+// Stability:
+//   - This package is stable and backward‑compatible within v1.
+//   - Breaking changes require a new major version.
+//
+// Ownership:
+//   - Team Identity Platform
+//
+// Consumers:
+//   - User Service
+//   - Admin Console
+//   - External Integrations
+
 syntax = "proto3";
 
 package user.v1;
