@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package identity.v1;
+
+import "identity_requests.proto";
+import "identity_responses.proto";
+import "grpc/health/v1/health.proto";
+
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/identity/v1;identityv1";
+
+// Service: IdentityService
+service IdentityService {
+  // Tries to authenticate via credentials
+  rpc Login(LoginRequest) returns (LoginResponse);
+}

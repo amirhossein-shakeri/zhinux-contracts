@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package common.ping.v1;
-
-option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/common/ping/v1;pingv1";
-
-message PingMessage {
-  int64 sequence = 1;
-}
