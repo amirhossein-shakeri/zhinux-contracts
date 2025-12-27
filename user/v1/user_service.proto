@@ -16,13 +16,13 @@ syntax = "proto3";
 
 package user.v1;
 
-option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/user/v1;userv1";
-
 import "user.proto";
 import "user_requests.proto";
 import "user_responses.proto";
 import "zhinux-contracts/common/v1/pagination.proto";
-import "grpc/health/v1/health.proto";
+// import "grpc/health/v1/health.proto";
+
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/user/v1;userv1";
 
 // Service: UserService
 service UserService {
@@ -33,6 +33,5 @@ service UserService {
   rpc GetUser(GetUserRequest) returns (User);
 
   // Lists users
-  rpc ListUsers(common.pagination.v1.PaginationRequest)
-  returns (stream ListUsersStreamResponse);
+  rpc ListUsers(common.pagination.v1.PaginationRequest) returns (stream ListUsersStreamResponse);
 }

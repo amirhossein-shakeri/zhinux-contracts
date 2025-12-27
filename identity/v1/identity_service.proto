@@ -2,9 +2,9 @@ syntax = "proto3";
 
 package identity.v1;
 
-import "grpc/health/v1/health.proto";
 import "identity_requests.proto";
 import "identity_responses.proto";
+// import "grpc/health/v1/health.proto";
 
 option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/identity/v1;identityv1";
 
