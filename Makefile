@@ -10,12 +10,12 @@ generate:
 .PHONY: protoc
 protoc:
 	protoc \
+		--proto_path=$(PROTO_DIR) \
 		--go_out=$(GEN_DIR) \
 		--go_opt=paths=source_relative \
 		--go-grpc_out=$(GEN_DIR) \
 		--go-grpc_opt=paths=source_relative \
 		$(PROTO_FILES)
-# 	protoc --go_out=$(GEN_DIR) --go-grpc_out=$(GEN_DIR) --proto_path=$(PROTO_DIR) $(PROTO_FILES)
 
 
 .PHONY: breaking

@@ -3,12 +3,7 @@ version: v2
 # name: buf.build/amirhossein-shakeri/zhinux-contracts
 
 modules:
-  - path: common
-  - path: events
-  - path: hello
-  - path: identity
-  - path: password
-  - path: user
+  - path: .
 
 deps:
   - buf.build/grpc/grpc
@@ -24,7 +19,6 @@ lint:
     - PACKAGE_VERSION_SUFFIX
     - RPC_REQUEST_RESPONSE_UNIQUE
     - SERVICE_SUFFIX
-    - UNSPECIFIED
 
   except:
     - PACKAGE_DIRECTORY_MATCH

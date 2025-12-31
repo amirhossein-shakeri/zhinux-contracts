@@ -2,8 +2,10 @@ syntax = "proto3";
 
 package user.v1;
 
-import "user.proto";
-import "zhinux-contracts/common/v1/pagination.proto";
+import "common/v1/pagination.proto";
+import "user/v1/user.proto";
+
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/user/v1;userv1";
 
 message ListUsersStreamResponse {
   oneof payload {

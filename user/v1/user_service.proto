@@ -16,10 +16,10 @@ syntax = "proto3";
 
 package user.v1;
 
-import "user.proto";
-import "user_requests.proto";
-import "user_responses.proto";
-import "zhinux-contracts/common/v1/pagination.proto";
+import "common/v1/pagination.proto";
+import "user/v1/user.proto";
+import "user/v1/user_requests.proto";
+import "user/v1/user_responses.proto";
 // import "grpc/health/v1/health.proto";
 
 option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/user/v1;userv1";
