@@ -6,7 +6,12 @@ option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/comm
 
 // Standard metadata structure
 message Metadata {
+  // Represents the unique identifier
   string id = 1;
+
+  // Represents the creation time
   int64 created_at_unix = 2;
+
+  // Represents the latest modification time
   int64 updated_at_unix = 3;
 }
