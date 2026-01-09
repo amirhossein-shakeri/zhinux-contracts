@@ -7,10 +7,13 @@ import "google/protobuf/empty.proto";
 
 option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/common/system/v1;systemv1";
 
+// Represents a ping message with sequence
 message PingMessage {
+  // Current message sequence
   int64 sequence = 1;
 }
 
+// Represents the system service with base methods
 service SystemService {
   // Get system version and build info
   rpc GetVersion(google.protobuf.Empty) returns (VersionResponse);
@@ -22,9 +25,17 @@ service SystemService {
   rpc PingStream(stream PingMessage) returns (stream PingMessage);
 }
 
+// Represents system info response
 message VersionResponse {
+  // Service name
   string service_name = 1;
+
+  // Git commit of the running version
   string git_commit = 2;
+
+  // The time the binary has been built
   string build_time = 3;
+
+  // Current version
   string version = 4;
 }
