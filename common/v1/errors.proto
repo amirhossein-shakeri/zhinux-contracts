@@ -6,7 +6,12 @@ option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/comm
 
 // Standard error message structure
 message Error {
-  int32               code    = 1; // Numeric error code
-  string              message = 2; // Human-readable error message
-  map<string, string> details = 3; // Additional error details
+  // Numeric error code
+  int32 code = 1;
+
+  // Human-readable error message
+  string message = 2;
+
+  // Additional error details
+  map<string, string> details = 3;
 }
