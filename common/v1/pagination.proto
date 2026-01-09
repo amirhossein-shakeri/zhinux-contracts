@@ -4,14 +4,26 @@ package common.pagination.v1;
 
 option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/common/pagination/v1;common";
 
+// Represents pagination request input parameters
 message PaginationRequest {
-  int32 page      = 1;
+  // Specifies the page number
+  int32 page = 1;
+
+  // Specifies the number of items in each page
   int32 page_size = 2;
 }
 
+// Contains the response pagination info
 message PaginationResponse {
-  int32 total_items  = 1;
-  int32 total_pages  = 2;
+  // Represents total count of items. Could be approximate or accurate
+  int32 total_items = 1;
+
+  // Represents total pages based on page size
+  int32 total_pages = 2;
+
+  // Shows number of current page results
   int32 current_page = 3;
-  int32 page_size    = 4;
+
+  // Shows the number of items in each page
+  int32 page_size = 4;
 }
