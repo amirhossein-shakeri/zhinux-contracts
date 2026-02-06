@@ -9,6 +9,20 @@ generate:
 
 .PHONY: protoc
 protoc:
+	mkdir -p $(GEN_DIR)
+	protoc \
+		--proto_path=$(PROTO_DIR) \
+		--go_out=$(GEN_DIR) \
+		--go_opt=paths=import \
+		--go_opt=module=github.com/amirhossein-shakeri/zhinux-contracts/gen/go \
+		--go-grpc_out=$(GEN_DIR) \
+		--go-grpc_opt=paths=import \
+		--go-grpc_opt=module=github.com/amirhossein-shakeri/zhinux-contracts/gen/go \
+		$(PROTO_FILES)
+
+.PHONY: protoc-legacy
+protoc-legacy:
+	mkdir -p $(GEN_DIR)
 	protoc \
 		--proto_path=$(PROTO_DIR) \
 		--go_out=$(GEN_DIR) \

@@ -12,10 +12,14 @@ plugins:
   - remote: buf.build/protocolbuffers/go
     out: gen/go
     opt:
-      - paths=source_relative
+      # - paths=source_relative
+      - paths=import
+      - module=github.com/amirhossein-shakeri/zhinux-contracts/gen/go
 
   - remote: buf.build/grpc/go
     out: gen/go
     opt:
-      - paths=source_relative
+      # - paths=source_relative
+      - paths=import
+      - module=github.com/amirhossein-shakeri/zhinux-contracts/gen/go
       - require_unimplemented_servers=false
