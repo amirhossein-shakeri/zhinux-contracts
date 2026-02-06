@@ -4,8 +4,12 @@ package events.identity.v1;
 
 option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/events/identity/v1;identityevents";
 
+// UserCreated is emitted when a user is created successfully.
 message UserCreated {
+  // user_id is the unique identifier of the created user.
   string user_id = 1;
+  // email is the user's email address at creation time.
   string email = 2;
+  // created_at_unix_ms is the event creation time in Unix milliseconds.
   int64 created_at_unix_ms = 3;
 }

@@ -6,7 +6,10 @@ import "user/v1/user.proto";
 
 option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/identity/v1;identityv1";
 
+// LoginResponse contains the authentication result.
 message LoginResponse {
+  // token is the issued access token for subsequent authenticated calls.
   string token = 1;
+  // user is the authenticated user profile.
   user.v1.User user = 2;
 }

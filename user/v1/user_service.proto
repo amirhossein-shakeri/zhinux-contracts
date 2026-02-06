@@ -16,7 +16,6 @@ syntax = "proto3";
 
 package user.v1;
 
-import "common/v1/pagination.proto";
 import "user/v1/user.proto";
 import "user/v1/user_requests.proto";
 import "user/v1/user_responses.proto";
@@ -24,14 +23,14 @@ import "user/v1/user_responses.proto";
 
 option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/user/v1;userv1";
 
-// Service: UserService
+// UserService provides APIs for user lifecycle and retrieval.
 service UserService {
-  // Create a new user
+  // CreateUser creates a new user record.
   rpc CreateUser(CreateUserRequest) returns (User);
 
-  // Get an individual user
+  // GetUser fetches one user by supported identifier.
   rpc GetUser(GetUserRequest) returns (User);
 
-  // Lists users
-  rpc ListUsers(common.pagination.v1.PaginationRequest) returns (stream ListUsersStreamResponse);
+  // ListUsers streams user list results with pagination metadata.
+  rpc ListUsers(ListUsersRequest) returns (stream ListUsersStreamResponse);
 }

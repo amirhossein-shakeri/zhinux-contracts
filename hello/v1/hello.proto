@@ -15,66 +15,73 @@ option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/hell
 // - Client streaming
 // - Bidirectional streaming
 service HelloService {
-
-  // Unary RPC
-  // Simple request / simple response
+  // SayHello sends a single greeting for one request. Unary RPC.
   rpc SayHello(SayHelloRequest) returns (SayHelloResponse);
 
-  // Server-side streaming
-  // Client sends one request, server streams responses
-  rpc StreamGreetings(StreamGreetingsRequest)
-  returns (stream StreamGreetingsResponse);
+  // StreamGreetings streams multiple greetings for one request. Server-side streaming RPC.
+  rpc StreamGreetings(StreamGreetingsRequest) returns (stream StreamGreetingsResponse);
 
-  // Client-side streaming
-  // Client streams requests, server replies once
-  rpc CollectGreetings(stream CollectGreetingsRequest)
-  returns (CollectGreetingsResponse);
+  // CollectGreetings receives a stream and returns one summary response. Client-side streaming RPC.
+  rpc CollectGreetings(stream CollectGreetingsRequest) returns (CollectGreetingsResponse);
 
-  // Bidirectional streaming
-  // Both sides stream independently
-  rpc Chat(stream ChatMessage)
-  returns (stream ChatMessage);
+  // Chat establishes a bidirectional stream for live messages. Bidirectional streaming RPC.
+  rpc Chat(stream ChatMessage) returns (stream ChatMessage);
 }
 
 // ---------------------------------------------
 // Messages
 // ---------------------------------------------
-
+// SayHelloRequest is the input for the unary greeting RPC.
 message SayHelloRequest {
-  string name = 1; // Person to greet
+  // name is the person to greet.
+  string name = 1;
 }
 
+// SayHelloResponse is the output for the unary greeting RPC.
 message SayHelloResponse {
-  string message = 1; // Greeting message
+  // message is the generated greeting text.
+  string message = 1;
 }
 
 // --- Server streaming ---
-
+// StreamGreetingsRequest requests multiple greetings.
 message StreamGreetingsRequest {
+  // name is the person to greet in each streamed message.
   string name = 1;
-  int32 count = 2; // Number of greetings requested
+  // count is the number of greeting messages requested.
+  int32 count = 2;
 }
 
+// StreamGreetingsResponse is one streamed greeting item.
 message StreamGreetingsResponse {
+  // message is the generated greeting text.
   string message = 1;
-  int64 sequence = 2; // Order of the greeting
+  // sequence is the 1-based order number of this greeting.
+  int64 sequence = 2;
 }
 
 // --- Client streaming ---
-
+// CollectGreetingsRequest is one item in the client stream.
 message CollectGreetingsRequest {
+  // message is one greeting entry sent by the client.
   string message = 1;
 }
 
+// CollectGreetingsResponse summarizes received client stream items.
 message CollectGreetingsResponse {
+  // total_received is the number of streamed messages accepted.
   int32 total_received = 1;
+  // summary is an aggregated summary derived from streamed messages.
   string summary = 2;
 }
 
 // --- Bidirectional streaming ---
-
+// ChatMessage is exchanged in both directions during chat.
 message ChatMessage {
+  // sender is the logical sender identity.
   string sender = 1;
+  // message is the chat payload.
   string message = 2;
+  // sent_at_unix_ms is the sender timestamp in Unix milliseconds.
   int64 sent_at_unix_ms = 3;
 }

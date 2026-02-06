@@ -7,9 +7,13 @@ import "user/v1/user.proto";
 
 option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/user/v1;userv1";
 
+// ListUsersStreamResponse is one stream item for list user results.
 message ListUsersStreamResponse {
+  // payload contains either pagination metadata or one user item.
   oneof payload {
+    // pagination is emitted for paging metadata in the stream.
     common.pagination.v1.PaginationResponse pagination = 1;
+    // user is one user item in the list stream.
     User user = 2;
   }
 }

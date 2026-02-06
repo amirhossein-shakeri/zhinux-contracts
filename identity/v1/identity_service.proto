@@ -8,8 +8,8 @@ import "identity/v1/identity_responses.proto";
 
 option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/identity/v1;identityv1";
 
-// Service: IdentityService
+// IdentityService provides identity and authentication operations.
 service IdentityService {
-  // Tries to authenticate via credentials
+  // Login authenticates a user by the provided credentials.
   rpc Login(LoginRequest) returns (LoginResponse);
 }

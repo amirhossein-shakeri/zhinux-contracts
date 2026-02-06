@@ -4,13 +4,21 @@ package identity.v1;
 
 option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/identity/v1;identityv1";
 
+// LoginRequest contains credential material for authentication.
 message LoginRequest {
+  // credential identifies which user should be authenticated.
   oneof credential {
+    // id is the user's unique identifier.
     string id = 6;
+    // phone is the user's phone number.
     string phone = 3;
+    // email is the user's email address.
     string email = 4;
+    // username is the user's unique handle.
     string username = 5;
-    string identifier = 1; // any of the above
+    // identifier is a generic identifier accepted by the backend.
+    string identifier = 1;
   }
+  // password is the plaintext password to verify.
   string password = 2;
 }
