@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package common.errors.v1;
 
-option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/common/errors/v1;common";
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/common/errors/v1;errorsv1";
 
 // Standard error message structure
 message Error {

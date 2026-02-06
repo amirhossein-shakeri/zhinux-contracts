@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package common.pagination.v1;
 
-option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/common/pagination/v1;common";
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/common/pagination/v1;paginationv1";
 
 // Represents pagination request input parameters
 message PaginationRequest {

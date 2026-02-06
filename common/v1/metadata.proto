@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package common.metadata.v1;
 
-option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/common/metadata/v1;common";
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/common/metadata/v1;metadatav1";
 
 // Standard metadata structure
 message Metadata {
