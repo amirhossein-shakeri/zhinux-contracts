@@ -44,7 +44,7 @@ option go_package = "github.com/amirhossein-shakeri/zhinux-asset/gen/go/asset/v1
 
    --------------------------------------------------------------------------------
 
-   Future Architecture Topics (Reserved for discussion later):
+   Future Architecture Topics (ToDo):
 
    1. Content-addressable asset storage
       - deduplication via checksum
