@@ -1,0 +1,394 @@
+syntax = "proto3";
+
+package asset.v1;
+
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/amirhossein-shakeri/zhinux-asset/gen/go/asset/v1;assetv1";
+
+/*
+   ================================================================================
+   COMMON ENUMS
+   ================================================================================
+*/
+
+enum AssetType {
+  ASSET_TYPE_UNSPECIFIED = 0;
+  ASSET_TYPE_IMAGE = 1;
+  ASSET_TYPE_VIDEO = 2;
+  ASSET_TYPE_DOCUMENT = 3;
+  ASSET_TYPE_ARCHIVE = 4;
+  ASSET_TYPE_AUDIO = 5;
+  ASSET_TYPE_GENERIC = 6;
+}
+
+enum AssetStatus {
+  ASSET_STATUS_UNSPECIFIED = 0;
+  ASSET_STATUS_ACTIVE = 1;
+  ASSET_STATUS_ARCHIVED = 2;
+  ASSET_STATUS_DELETED = 3;
+  ASSET_STATUS_QUARANTINED = 4;
+}
+
+enum AssetVisibility {
+  ASSET_VISIBILITY_UNSPECIFIED = 0;
+  ASSET_VISIBILITY_PRIVATE = 1;
+  ASSET_VISIBILITY_INTERNAL = 2;
+  ASSET_VISIBILITY_PUBLIC = 3;
+}
+
+/*
+   ================================================================================
+   COMMON VALUE OBJECTS
+   ================================================================================
+*/
+
+message StorageLocation {
+  // Storage backend provider (e.g., s3, gcs, azure_blob)
+  string provider = 1;
+
+  // Storage bucket/container
+  string bucket = 2;
+
+  // Object key/path
+  string object_key = 3;
+
+  // Storage region
+  string region = 4;
+}
+
+message FileMetadata {
+  // MIME type
+  string mime_type = 1;
+
+  // File extension
+  string extension = 2;
+
+  // File size in bytes
+  int64 size_bytes = 3;
+
+  // File checksum (sha256 recommended)
+  string checksum = 4;
+
+  // Encoding format
+  string encoding = 5;
+}
+
+message MediaMetadata {
+  // Width (images/videos)
+  int32 width = 1;
+
+  // Height (images/videos)
+  int32 height = 2;
+
+  // Duration (seconds)
+  double duration_seconds = 3;
+
+  // Bitrate
+  int32 bitrate = 4;
+
+  // Frame rate
+  double frame_rate = 5;
+
+  // Page count for documents
+  int32 pages = 6;
+}
+
+message EntityReference {
+  // Entity type (e.g., User, Product, Post)
+  string entity_type = 1;
+
+  // Unique identifier of entity
+  string entity_id = 2;
+}
+
+message Pagination {
+  // Maximum items to return
+  int32 page_size = 1;
+
+  // Token for retrieving next page
+  string page_token = 2;
+}
+
+message AssetFilter {
+  AssetType type = 1;
+
+  AssetStatus status = 2;
+
+  AssetVisibility visibility = 3;
+
+  string owner_type = 4;
+
+  string owner_id = 5;
+
+  string mime_type = 6;
+
+  google.protobuf.Timestamp created_after = 7;
+
+  google.protobuf.Timestamp created_before = 8;
+}
+
+/*
+   ================================================================================
+   ASSET CREATION
+   ================================================================================
+*/
+
+message RegisterAssetRequest {
+  // Idempotency key for safe retries
+  string idempotency_key = 1;
+
+  // Logical type of asset
+  AssetType type = 2;
+
+  // Visibility policy
+  AssetVisibility visibility = 3;
+
+  // Owner entity
+  EntityReference owner = 4;
+
+  // Initial storage location of uploaded file
+  StorageLocation storage = 5;
+
+  // File metadata
+  FileMetadata file_metadata = 6;
+
+  // Optional media metadata
+  MediaMetadata media_metadata = 7;
+
+  // Original file name
+  string file_name = 8;
+
+  // Optional initial tags
+  repeated string tags = 9;
+
+  // Arbitrary metadata
+  map<string, string> attributes = 10;
+}
+
+message CreateAssetVersionRequest {
+  string idempotency_key = 1;
+
+  // Asset to update
+  string asset_id = 2;
+
+  // Storage location for the new version
+  StorageLocation storage = 3;
+
+  // File metadata
+  FileMetadata file_metadata = 4;
+
+  // Media metadata
+  MediaMetadata media_metadata = 5;
+
+  // New file name
+  string file_name = 6;
+}
+
+/*
+   ================================================================================
+   RETRIEVAL
+   ================================================================================
+*/
+
+message GetAssetRequest {
+  string asset_id = 1;
+
+  // Whether to include versions
+  bool include_versions = 2;
+
+  // Whether to include usages
+  bool include_usages = 3;
+
+  // Whether to include variants
+  bool include_variants = 4;
+}
+
+message GetAssetVersionRequest {
+  string asset_version_id = 1;
+}
+
+message ListAssetsRequest {
+  Pagination pagination = 1;
+
+  AssetFilter filter = 2;
+
+  // Sort field
+  string order_by = 3;
+
+  // Ascending or descending
+  bool ascending = 4;
+}
+
+message SearchAssetsRequest {
+  Pagination pagination = 1;
+
+  // Full text query
+  string query = 2;
+
+  // Optional filters
+  AssetFilter filter = 3;
+
+  // Tags filter
+  repeated string tags = 4;
+}
+
+/*
+   ================================================================================
+   ASSET USAGE
+   ================================================================================
+*/
+
+message LinkAssetRequest {
+  string idempotency_key = 1;
+
+  string asset_id = 2;
+
+  EntityReference entity = 3;
+
+  // Usage role (thumbnail, avatar, attachment)
+  string usage_role = 4;
+}
+
+message UnlinkAssetRequest {
+  string asset_id = 1;
+
+  EntityReference entity = 2;
+
+  string usage_role = 3;
+}
+
+message ListAssetUsagesRequest {
+  string asset_id = 1;
+
+  Pagination pagination = 2;
+}
+
+message ListEntityAssetsRequest {
+  EntityReference entity = 1;
+
+  string usage_role = 2;
+
+  Pagination pagination = 3;
+}
+
+/*
+   ================================================================================
+   VARIANTS
+   ================================================================================
+*/
+
+message RegisterAssetVariantRequest {
+  string asset_version_id = 1;
+
+  // Variant identifier
+  string variant_type = 2;
+
+  StorageLocation storage = 3;
+
+  FileMetadata file_metadata = 4;
+
+  MediaMetadata media_metadata = 5;
+}
+
+message ListAssetVariantsRequest {
+  string asset_version_id = 1;
+}
+
+/*
+   ================================================================================
+   METADATA & TAGS
+   ================================================================================
+*/
+
+message UpdateAssetMetadataRequest {
+  string asset_id = 1;
+
+  map<string, string> attributes = 2;
+
+  google.protobuf.FieldMask update_mask = 3;
+}
+
+message AddAssetTagsRequest {
+  string asset_id = 1;
+
+  repeated string tags = 2;
+}
+
+message RemoveAssetTagsRequest {
+  string asset_id = 1;
+
+  repeated string tags = 2;
+}
+
+/*
+   ================================================================================
+   VISIBILITY
+   ================================================================================
+*/
+
+message UpdateAssetVisibilityRequest {
+  string asset_id = 1;
+
+  AssetVisibility visibility = 2;
+}
+
+/*
+   ================================================================================
+   LIFECYCLE
+   ================================================================================
+*/
+
+message DeleteAssetRequest {
+  string asset_id = 1;
+
+  // If true, deletion will fail if usages exist
+  bool enforce_usage_check = 2;
+}
+
+message RestoreAssetRequest {
+  string asset_id = 1;
+}
+
+message PurgeAssetRequest {
+  string asset_id = 1;
+
+  // Requires elevated privileges
+  bool confirm = 2;
+}
+
+/*
+   ================================================================================
+   STORAGE URL UTILITIES
+   ================================================================================
+*/
+
+message GenerateDownloadUrlRequest {
+  string asset_version_id = 1;
+
+  // Expiration seconds
+  int32 expires_in = 2;
+}
+
+message GenerateUploadUrlRequest {
+  string file_name = 1;
+
+  string mime_type = 2;
+
+  int64 expected_size_bytes = 3;
+
+  AssetType asset_type = 4;
+}
+
+/*
+   ================================================================================
+   AUDIT
+   ================================================================================
+*/
+
+message GetAssetAuditLogRequest {
+  string asset_id = 1;
+
+  Pagination pagination = 2;
+}

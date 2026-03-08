@@ -1,0 +1,320 @@
+syntax = "proto3";
+
+package asset.v1;
+
+import "asset/v1/asset_requests.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/amirhossein-shakeri/zhinux-asset/gen/go/asset/v1;assetv1";
+
+/*
+   ================================================================================
+   CORE DOMAIN MODELS
+   ================================================================================
+*/
+
+/*
+   Represents the logical digital asset.
+
+   This is the Aggregate Root of the Asset domain.
+   The asset itself represents the logical concept of a file
+   independent of the physical storage representation.
+*/
+message Asset {
+  // Unique identifier
+  string id = 1;
+
+  AssetType type = 2;
+
+  AssetStatus status = 3;
+
+  AssetVisibility visibility = 4;
+
+  // Owning entity
+  EntityReference owner = 5;
+
+  // Current active version
+  AssetVersion current_version = 6;
+
+  // Optional list of historical versions
+  repeated AssetVersion versions = 7;
+
+  // Optional usages
+  repeated AssetUsage usages = 8;
+
+  // Tags used for search and categorization
+  repeated string tags = 9;
+
+  // Arbitrary attributes
+  map<string, string> attributes = 10;
+
+  google.protobuf.Timestamp created_at = 11;
+
+  google.protobuf.Timestamp updated_at = 12;
+
+  google.protobuf.Timestamp deleted_at = 13;
+}
+
+/*
+   Represents a physical version of an asset file.
+
+   A version points to the actual stored object in the storage backend.
+*/
+message AssetVersion {
+  string id = 1;
+
+  string asset_id = 2;
+
+  int32 version_number = 3;
+
+  StorageLocation storage = 4;
+
+  FileMetadata file_metadata = 5;
+
+  MediaMetadata media_metadata = 6;
+
+  string file_name = 7;
+
+  repeated AssetVariant variants = 8;
+
+  google.protobuf.Timestamp uploaded_at = 9;
+
+  string uploaded_by = 10;
+}
+
+/*
+   Represents a derived file generated from an AssetVersion.
+
+   Examples:
+   - thumbnail
+   - preview
+   - transcoded_video
+*/
+message AssetVariant {
+  string id = 1;
+
+  string asset_version_id = 2;
+
+  string variant_type = 3;
+
+  StorageLocation storage = 4;
+
+  FileMetadata file_metadata = 5;
+
+  MediaMetadata media_metadata = 6;
+
+  google.protobuf.Timestamp created_at = 7;
+}
+
+/*
+   Represents the relationship between an asset and another entity.
+*/
+message AssetUsage {
+  string id = 1;
+
+  string asset_id = 2;
+
+  EntityReference entity = 3;
+
+  string usage_role = 4;
+
+  google.protobuf.Timestamp created_at = 5;
+
+  string created_by = 6;
+}
+
+/*
+   Represents an audit log entry for an asset.
+*/
+message AssetAuditLog {
+  string id = 1;
+
+  string asset_id = 2;
+
+  string action = 3;
+
+  string actor_type = 4;
+
+  string actor_id = 5;
+
+  map<string, string> metadata = 6;
+
+  google.protobuf.Timestamp created_at = 7;
+}
+
+/*
+   ================================================================================
+   PAGINATION
+   ================================================================================
+*/
+
+message PageInfo {
+  string next_page_token = 1;
+
+  int32 total_results = 2;
+}
+
+/*
+   ================================================================================
+   ASSET CREATION RESPONSES
+   ================================================================================
+*/
+
+message RegisterAssetResponse {
+  Asset asset = 1;
+}
+
+message CreateAssetVersionResponse {
+  AssetVersion version = 1;
+
+  Asset asset = 2;
+}
+
+/*
+   ================================================================================
+   RETRIEVAL RESPONSES
+   ================================================================================
+*/
+
+message GetAssetResponse {
+  Asset asset = 1;
+}
+
+message GetAssetVersionResponse {
+  AssetVersion version = 1;
+}
+
+message ListAssetsResponse {
+  repeated Asset assets = 1;
+
+  PageInfo page_info = 2;
+}
+
+message SearchAssetsResponse {
+  repeated Asset assets = 1;
+
+  PageInfo page_info = 2;
+}
+
+/*
+   ================================================================================
+   USAGE RESPONSES
+   ================================================================================
+*/
+
+message LinkAssetResponse {
+  AssetUsage usage = 1;
+}
+
+message UnlinkAssetResponse {
+  bool success = 1;
+}
+
+message ListAssetUsagesResponse {
+  repeated AssetUsage usages = 1;
+
+  PageInfo page_info = 2;
+}
+
+message ListEntityAssetsResponse {
+  repeated Asset assets = 1;
+
+  PageInfo page_info = 2;
+}
+
+/*
+   ================================================================================
+   VARIANT RESPONSES
+   ================================================================================
+*/
+
+message RegisterAssetVariantResponse {
+  AssetVariant variant = 1;
+}
+
+message ListAssetVariantsResponse {
+  repeated AssetVariant variants = 1;
+}
+
+/*
+   ================================================================================
+   METADATA RESPONSES
+   ================================================================================
+*/
+
+message UpdateAssetMetadataResponse {
+  Asset asset = 1;
+}
+
+message AddAssetTagsResponse {
+  Asset asset = 1;
+}
+
+message RemoveAssetTagsResponse {
+  Asset asset = 1;
+}
+
+/*
+   ================================================================================
+   VISIBILITY RESPONSES
+   ================================================================================
+*/
+
+message UpdateAssetVisibilityResponse {
+  Asset asset = 1;
+}
+
+/*
+   ================================================================================
+   LIFECYCLE RESPONSES
+   ================================================================================
+*/
+
+message DeleteAssetResponse {
+  bool success = 1;
+
+  Asset asset = 2;
+}
+
+message RestoreAssetResponse {
+  Asset asset = 1;
+}
+
+message PurgeAssetResponse {
+  bool success = 1;
+}
+
+/*
+   ================================================================================
+   URL GENERATION RESPONSES
+   ================================================================================
+*/
+
+message GenerateDownloadUrlResponse {
+  // Presigned URL
+  string url = 1;
+
+  google.protobuf.Timestamp expires_at = 2;
+}
+
+message GenerateUploadUrlResponse {
+  // Presigned upload URL
+  string upload_url = 1;
+
+  // Storage location where file will appear
+  StorageLocation storage = 2;
+
+  google.protobuf.Timestamp expires_at = 3;
+}
+
+/*
+   ================================================================================
+   AUDIT RESPONSES
+   ================================================================================
+*/
+
+message GetAssetAuditLogResponse {
+  repeated AssetAuditLog logs = 1;
+
+  PageInfo page_info = 2;
+}

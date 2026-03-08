@@ -1,0 +1,303 @@
+syntax = "proto3";
+
+package asset.v1;
+
+import "asset/v1/asset_requests.proto";
+import "asset/v1/asset_responses.proto";
+
+option go_package = "github.com/amirhossein-shakeri/zhinux-asset/gen/go/asset/v1;assetv1";
+
+/*
+   ================================================================================
+   Asset Service API
+   ================================================================================
+
+   This service manages metadata and lifecycle of digital assets used across the
+   platform. It does NOT store the binary file itself; instead it tracks metadata
+   and storage locations (e.g., S3 object keys).
+
+   Responsibilities:
+
+   - Register uploaded files
+   - Maintain metadata
+   - Manage asset versions
+   - Track asset usage across services
+   - Manage variants/derivatives
+   - Enforce lifecycle policies
+   - Provide querying and search capabilities
+   - Ensure safe deletion with usage checks
+
+   Non Responsibilities:
+
+   - Binary storage (handled by object storage like S3)
+   - Media processing pipelines
+   - Content/business domain management
+
+   DDD Aggregate Root:
+     Asset
+
+   Primary Entities:
+     Asset
+     AssetVersion
+     AssetVariant
+     AssetUsage
+
+   --------------------------------------------------------------------------------
+
+   Future Architecture Topics (Reserved for discussion later):
+
+   1. Content-addressable asset storage
+      - deduplication via checksum
+      - global file reuse
+
+   2. Asset deduplication architecture
+      - cross-service file reuse
+      - upload fingerprint detection
+
+   3. CDN and global delivery integration
+      - edge caching
+      - signed URLs
+      - CDN invalidation
+
+   ================================================================================
+*/
+
+service AssetService {
+  // ---------------------------------------------------------------------------
+  // Asset Creation & Registration
+  // ---------------------------------------------------------------------------
+
+  /*
+     Registers a new logical asset in the system.
+
+     This operation creates the Asset aggregate and its first version.
+
+     Typical flow:
+     1. Client uploads binary to storage (e.g. S3) using a presigned URL
+     2. Client calls RegisterAsset to record metadata
+     3. System returns Asset metadata
+
+     This separation ensures the service remains storage-agnostic.
+  */
+  rpc RegisterAsset(RegisterAssetRequest) returns (RegisterAssetResponse);
+
+  /*
+     Registers a new version of an existing asset.
+
+     Use cases:
+     - replacing a profile image
+     - updating a document
+     - regenerating media files
+
+     The existing asset remains stable while versions evolve.
+  */
+  rpc CreateAssetVersion(CreateAssetVersionRequest) returns (CreateAssetVersionResponse);
+
+  // ---------------------------------------------------------------------------
+  // Retrieval
+  // ---------------------------------------------------------------------------
+
+  /*
+     Retrieves full metadata for a single asset.
+
+     Includes:
+     - current version
+     - metadata
+     - visibility
+     - ownership
+
+     May optionally include:
+     - usages
+     - variants
+     - historical versions
+  */
+  rpc GetAsset(GetAssetRequest) returns (GetAssetResponse);
+
+  /*
+     Retrieves metadata for a specific asset version.
+
+     Useful when historical version inspection is required.
+  */
+  rpc GetAssetVersion(GetAssetVersionRequest) returns (GetAssetVersionResponse);
+
+  /*
+     Lists assets with filtering and pagination.
+
+     Supports filters such as:
+     - owner
+     - type
+     - status
+     - MIME type
+     - creation date range
+  */
+  rpc ListAssets(ListAssetsRequest) returns (ListAssetsResponse);
+
+  /*
+     Searches assets using metadata or tags.
+
+     Intended for advanced search or administrative tooling.
+  */
+  rpc SearchAssets(SearchAssetsRequest) returns (SearchAssetsResponse);
+
+  // ---------------------------------------------------------------------------
+  // Asset Usage Management
+  // ---------------------------------------------------------------------------
+
+  /*
+     Links an asset to another entity in the platform.
+
+     Example usages:
+     - Product thumbnail
+     - User avatar
+     - Post attachment
+     - Document reference
+
+     This relationship prevents unsafe deletion and enables usage tracking.
+  */
+  rpc LinkAsset(LinkAssetRequest) returns (LinkAssetResponse);
+
+  /*
+     Removes an asset relationship from an entity.
+
+     This does NOT delete the asset itself.
+  */
+  rpc UnlinkAsset(UnlinkAssetRequest) returns (UnlinkAssetResponse);
+
+  /*
+     Lists all usages of an asset.
+
+     Useful for:
+     - safe deletion checks
+     - impact analysis
+  */
+  rpc ListAssetUsages(ListAssetUsagesRequest) returns (ListAssetUsagesResponse);
+
+  /*
+     Lists all assets attached to a specific entity.
+
+     Example:
+     - all images for a product
+     - attachments for a post
+  */
+  rpc ListEntityAssets(ListEntityAssetsRequest) returns (ListEntityAssetsResponse);
+
+  // ---------------------------------------------------------------------------
+  // Variants & Derived Assets
+  // ---------------------------------------------------------------------------
+
+  /*
+     Registers a derived variant of an asset version.
+
+     Example variants:
+     - thumbnail
+     - resized image
+     - transcoded video
+     - compressed document
+
+     Typically called by media processing pipelines.
+  */
+  rpc RegisterAssetVariant(RegisterAssetVariantRequest) returns (RegisterAssetVariantResponse);
+
+  /*
+     Lists all variants of a version.
+
+     Used to retrieve thumbnails, previews, etc.
+  */
+  rpc ListAssetVariants(ListAssetVariantsRequest) returns (ListAssetVariantsResponse);
+
+  // ---------------------------------------------------------------------------
+  // Metadata & Tagging
+  // ---------------------------------------------------------------------------
+
+  /*
+     Updates asset metadata.
+
+     Only mutable metadata fields should be updated here.
+  */
+  rpc UpdateAssetMetadata(UpdateAssetMetadataRequest) returns (UpdateAssetMetadataResponse);
+
+  /*
+     Adds tags to an asset.
+
+     Tags enable search and categorization.
+  */
+  rpc AddAssetTags(AddAssetTagsRequest) returns (AddAssetTagsResponse);
+
+  /*
+     Removes tags from an asset.
+  */
+  rpc RemoveAssetTags(RemoveAssetTagsRequest) returns (RemoveAssetTagsResponse);
+
+  // ---------------------------------------------------------------------------
+  // Access Control
+  // ---------------------------------------------------------------------------
+
+  /*
+     Updates the visibility of an asset.
+
+     Example:
+     - private
+     - internal
+     - public
+  */
+  rpc UpdateAssetVisibility(UpdateAssetVisibilityRequest) returns (UpdateAssetVisibilityResponse);
+
+  // ---------------------------------------------------------------------------
+  // Lifecycle Management
+  // ---------------------------------------------------------------------------
+
+  /*
+     Soft deletes an asset.
+
+     The asset is marked as deleted but preserved for recovery.
+  */
+  rpc DeleteAsset(DeleteAssetRequest) returns (DeleteAssetResponse);
+
+  /*
+     Restores a previously deleted asset.
+  */
+  rpc RestoreAsset(RestoreAssetRequest) returns (RestoreAssetResponse);
+
+  /*
+     Permanently removes an asset and all versions.
+
+     This is a destructive operation and should typically be restricted to
+     administrative workflows or background cleanup jobs.
+  */
+  rpc PurgeAsset(PurgeAssetRequest) returns (PurgeAssetResponse);
+
+  // ---------------------------------------------------------------------------
+  // Utility / Operational APIs
+  // ---------------------------------------------------------------------------
+
+  /*
+     Generates a temporary download URL for an asset version.
+
+     This allows clients to access files stored in object storage without exposing
+     the storage provider directly.
+
+     Typically implemented using presigned URLs.
+  */
+  rpc GenerateDownloadUrl(GenerateDownloadUrlRequest) returns (GenerateDownloadUrlResponse);
+
+  /*
+     Generates a temporary upload URL for direct client upload.
+
+     This avoids routing large binary uploads through the service.
+  */
+  rpc GenerateUploadUrl(GenerateUploadUrlRequest) returns (GenerateUploadUrlResponse);
+
+  // ---------------------------------------------------------------------------
+  // Audit & Observability
+  // ---------------------------------------------------------------------------
+
+  /*
+     Retrieves audit history for an asset.
+
+     Useful for:
+     - compliance
+     - debugging
+     - administrative tooling
+  */
+  rpc GetAssetAuditLog(GetAssetAuditLogRequest) returns (GetAssetAuditLogResponse);
+}
