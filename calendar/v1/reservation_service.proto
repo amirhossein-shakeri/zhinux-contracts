@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package reservation.v1;
+
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/calendar/v1;reservationv1";
+
+service ReservationService {
+  rpc CreateReservation(CreateReservationRequest) returns (CreateReservationResponse);
+}

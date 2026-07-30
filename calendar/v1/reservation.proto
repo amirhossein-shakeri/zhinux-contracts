@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package reservation.v1;
+
+import "common/v1/metadata.proto";
+
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/calendar/v1;reservationv1";
+
+message Reservation {
+  common.metadata.v1.Metadata metadata = 1;
+  // string idempotency_key =
+}
