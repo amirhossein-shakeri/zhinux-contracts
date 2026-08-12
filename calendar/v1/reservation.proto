@@ -6,7 +6,13 @@ import "common/v1/metadata.proto";
 
 option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/calendar/v1;reservationv1";
 
+// Reservation represents a reservation record in the reservation domain.
 message Reservation {
+  // metadata contains standard metadata for the reservation.
   common.metadata.v1.Metadata metadata = 1;
-  // string idempotency_key =
+
+
+
+  // idempotency_key is a unique key to ensure idempotent reservation creation.
+  string idempotency_key = 3;
 }

@@ -7,6 +7,18 @@ import "user/v1/user.proto";
 
 option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/user/v1;userv1";
 
+// CreateUserResponse is the response for CreateUser RPC.
+message CreateUserResponse {
+  // user is the newly created user record.
+  User user = 1;
+}
+
+// GetUserResponse is the response for GetUser RPC.
+message GetUserResponse {
+  // user is the fetched user record.
+  User user = 1;
+}
+
 // ListUsersStreamResponse is one stream item for list user results.
 message ListUsersStreamResponse {
   // payload contains either pagination metadata or one user item.

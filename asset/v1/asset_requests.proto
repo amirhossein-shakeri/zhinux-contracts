@@ -5,7 +5,7 @@ package asset.v1;
 import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/amirhossein-shakeri/zhinux-asset/gen/go/asset/v1;assetv1";
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/asset/v1;assetv1";
 
 /*
    ================================================================================

@@ -10,13 +10,13 @@
 // Consumers:
 //   - User Service
 //   - Admin Console
+//   - Calendar & Reservation Service
 //   - External Integrations
 
 syntax = "proto3";
 
 package user.v1;
 
-import "user/v1/user.proto";
 import "user/v1/user_requests.proto";
 import "user/v1/user_responses.proto";
 // import "grpc/health/v1/health.proto";
@@ -26,10 +26,10 @@ option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/user
 // UserService provides APIs for user lifecycle and retrieval.
 service UserService {
   // CreateUser creates a new user record.
-  rpc CreateUser(CreateUserRequest) returns (User);
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
 
   // GetUser fetches one user by supported identifier.
-  rpc GetUser(GetUserRequest) returns (User);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
 
   // ListUsers streams user list results with pagination metadata.
   rpc ListUsers(ListUsersRequest) returns (stream ListUsersStreamResponse);

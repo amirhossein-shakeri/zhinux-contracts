@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package reservation.v1;
+
+import "common/v1/time_range.proto";
+
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/calendar/v1;reservationv1";
+
+// ReservationSlot represents a time slot for a reservation at a specific venue.
+message ReservationSlot {
+  // venue_id is the unique identifier of the venue for which the reservation slot is defined.
+  string venue_id = 1;
+
+  // time_range defines the start and end times for the reservation slot.
+  common.v1.TimeRange time_range = 2;
+}

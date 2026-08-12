@@ -2,8 +2,13 @@ syntax = "proto3";
 
 package reservation.v1;
 
+import "calendar/v1/reservation_requests.proto";
+import "calendar/v1/reservation_responses.proto";
+
 option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/calendar/v1;reservationv1";
 
+// ReservationService provides APIs for reservation lifecycle and retrieval.
 service ReservationService {
+  // CreateReservation creates a new reservation record.
   rpc CreateReservation(CreateReservationRequest) returns (CreateReservationResponse);
 }

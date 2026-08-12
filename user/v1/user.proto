@@ -10,12 +10,16 @@ option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/user
 message User {
   // metadata contains identity and audit timestamps.
   common.metadata.v1.Metadata metadata = 1;
+
   // phone is the user's phone number.
   string phone = 2;
+
   // name is the user's display name.
   optional string name = 3;
+
   // username is the user's unique handle.
   optional string username = 4;
+
   // email is the user's email address.
   optional string email = 5;
 }

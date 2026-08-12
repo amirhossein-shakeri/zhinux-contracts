@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package common.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/common/v1;commonv1";
+
+// Standard time range structure
+message TimeRange {
+  // Start time
+  google.protobuf.Timestamp start = 1;
+
+  // End time
+  google.protobuf.Timestamp end = 2;
+}

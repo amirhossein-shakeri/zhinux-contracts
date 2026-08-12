@@ -10,10 +10,13 @@ option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/user
 message CreateUserRequest {
   // phone is the user's required phone number.
   string phone = 1;
+
   // name is the user's optional display name.
   optional string name = 2;
+
   // username is the user's optional unique handle.
   optional string username = 3;
+
   // email is the user's optional email address.
   optional string email = 4;
 }
@@ -24,10 +27,13 @@ message GetUserRequest {
   oneof identifier {
     // id fetches the user by unique identifier.
     string id = 1;
+
     // phone fetches the user by phone number.
     string phone = 2;
+
     // email fetches the user by email address.
     string email = 3;
+
     // username fetches the user by username.
     string username = 4;
   }

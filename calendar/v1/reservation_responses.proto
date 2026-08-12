@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package reservation.v1;
+
+import "calendar/v1/reservation.proto";
+
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/calendar/v1;reservationv1";
+
+
+// CreateReservationResponse contains the response for creating a reservation.
+message CreateReservationResponse {
+  // Reservation represents a reservation record in the reservation domain.
+  Reservation reservation = 1;
+}

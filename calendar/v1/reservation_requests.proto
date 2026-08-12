@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package reservation.v1;
+
+import "common/v1/time_range.proto";
+
+option go_package = "github.com/amirhossein-shakeri/zhinux-contracts/gen/go/calendar/v1;reservationv1";
+
+
+// CreateReservationRequest is the request for CreateReservation RPC.
+message CreateReservationRequest {
+  // Requester user's ID
+  string user_id = 1;
+
+  // Target venue's ID
+  string venue_id = 2;
+
+  // Time range to check for reservation
+  common.v1.TimeRange time_range = 3;
+
+  // IdempotencyKey to avoid duplicate retries to fail
+  string idempotency_key = 5;
+}
